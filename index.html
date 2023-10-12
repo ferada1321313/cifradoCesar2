@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cifrado César</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Cifrado César</h1>
+    <label for="textoOriginal">Texto Original:</label>
+    <textarea id="textoOriginal" rows="4" cols="40"></textarea>
+    <br>
+    <label for="desplazamiento">Desplazamiento:</label>
+    <input type="number" id="desplazamiento" min="1" max="64" value="3">
+    <br>
+    <button onclick="cifrarTexto()">Cifrar</button>
+    <br>
+    <label for="textoCifrado">Texto Cifrado:</label>
+    <textarea id="textoCifrado" rows="4" cols="40" readonly></textarea>
+  </div>
+
+  <script>
+    function cifrarCesar(texto, desplazamiento) {
+      let textoCifrado = '';
+
+      for (let i = 0; i < texto.length; i++) {
+        const caracter = texto[i];
+        if (/[a-zA-Z]/.test(caracter)) {
+          const esMayuscula = (caracter === caracter.toUpperCase());
+          const asciiInicial = esMayuscula ? 65 : 97;
+          const asciiCaracter = caracter.charCodeAt(0);
+          const nuevoAscii = (asciiCaracter - asciiInicial + desplazamiento) % 26;
+          const nuevoCaracter = String.fromCharCode(asciiInicial + nuevoAscii);
+          textoCifrado += esMayuscula ? nuevoCaracter : nuevoCaracter.toLowerCase();
+        } else {
+          // Si el carácter no es una letra, mantenerlo sin cambios
+          textoCifrado += caracter;
+        }
+      }
+
+      return textoCifrado;
+    }
+
+    function cifrarTexto() {
+      const textoOriginal = document.getElementById("textoOriginal").value;
+      const desplazamiento = parseInt(document.getElementById("desplazamiento").value);
+      const textoCifrado = cifrarCesar(textoOriginal, desplazamiento);
+      document.getElementById("textoCifrado").value = textoCifrado;
+    }
+  </script>
+</body>
+</html>
